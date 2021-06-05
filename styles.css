@@ -11,3 +11,10 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+.inputItems {
+  text-align:center;
+  min-width: 200px;
+  margin:0px 10px;
+  display:inline-block;
+}

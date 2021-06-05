@@ -50,7 +50,8 @@ function applyChangeSP() {
     var nowSp = nowSpNum
     var winSp = winSpCal(winSel)
     var affectionSp = affectionNum
-    var fanSp = fanSpCal(fanNum)
+    var totalFanNum = totalFanNumCal(fanNum)
+    var fanSp = fanSpCal(totalFanNum)
 
     var totalSp = calSp(nowSp, winSp, affectionSp, fanSp)
 
@@ -58,7 +59,7 @@ function applyChangeSP() {
     changeNowSP(nowSp)
     changeWinSP(winSp)
     changeaffectionSP(affectionSp, affectionNum)
-    changeFanSP(fanSp)
+    changeFanSP(fanSp, totalFanNum)
 
     document.getElementById("resultSP").innerText = totalSp
 }
@@ -73,10 +74,23 @@ function winSpCal(result) {
     else return 0
 }
 
-function fanSpCal(fanNum) {
-    var fanSp = (Math.floor(fanNum/10000))*3
+function fanSpCal(totalFanNum) {
+    var fanSp = (Math.floor(totalFanNum/10000))*3
     if (fanSp >= 300) return 300
     else return fanSp
+}
+
+function totalFanNumCal(fanNum) {
+    var totalFanNum = fanNum
+    var bonus_length = document.getElementsByName("bonusFanNum").length;
+  
+    for (var i=0; i<bonus_length; i++) {
+        if (document.getElementsByName("bonusFanNum")[i].checked == true) {
+            totalFanNum += Number(document.getElementsByName("bonusFanNum")[i].value)
+        }
+    }
+
+    return totalFanNum
 }
 
 function changeNowSP(nowSp) {
@@ -126,6 +140,12 @@ function changeaffectionSP(affectionSp, affectionNum) {
     document.getElementById("calaffectionSp").innerText = affectionSp
 }
 
-function changeFanSP(fanSp) {
+function changeFanSP(fanSp, totalFanNum) {
+    document.getElementById("fanNumHead").innerText = "(총 " + numberWithCommas(totalFanNum) + "명)"
     document.getElementById("calFanSp").innerText = fanSp
+}
+
+// https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
