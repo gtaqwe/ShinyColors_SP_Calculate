@@ -1,0 +1,13 @@
+div {
+    margin: 10px;
+}
+
+h3 {
+  margin: 5px 20px;
+}
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
