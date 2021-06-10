@@ -13,8 +13,6 @@ function mainInputUpdate() {
     initNumVal()
     winSel = document.getElementById("winSel").value
 
-    // console.log(nowSpNum, winSel, affectionNum, fanNum)
-
     applyChangeSP()    
 }
 
@@ -54,7 +52,6 @@ function applyChangeSP() {
     var fanSp = fanSpCal(totalFanNum)
 
     var totalSp = calSp(nowSp, winSp, affectionSp, fanSp)
-
 
     changeNowSP(nowSp)
     changeWinSP(winSp)
@@ -107,33 +104,17 @@ function changeaffectionSP(affectionSp, affectionNum) {
     var affectionDetailNext
     var affectionDetailStr
 
-    if (affectionNum < affectionLvValList[0]) {
-        affectionDetailLv = 0
-        affectionDetailNext = affectionLvValList[affectionDetailLv] - affectionNum
-        affectionDetailStr = "Lv : " + affectionDetailLv + ", Next : " + affectionDetailNext
-    }
-    else if (affectionNum < affectionLvValList[1]) {
-        affectionDetailLv = 1
-        affectionDetailNext = affectionLvValList[affectionDetailLv] - affectionNum
-        affectionDetailStr = "Lv : " + affectionDetailLv + ", Next : " + affectionDetailNext
-    }
-    else if (affectionNum < affectionLvValList[2]) {
-        affectionDetailLv = 2
-        affectionDetailNext = affectionLvValList[affectionDetailLv] - affectionNum
-        affectionDetailStr = "Lv : " + affectionDetailLv + ", Next : " + affectionDetailNext
-    }
-    else if (affectionNum < affectionLvValList[3]) {
-        affectionDetailLv = 3
-        affectionDetailNext = affectionLvValList[affectionDetailLv] - affectionNum
-        affectionDetailStr = "Lv : " + affectionDetailLv + ", Next : " + affectionDetailNext
-    }
-    else if (affectionNum < affectionLvValList[4]) {
-        affectionDetailLv = 4
-        affectionDetailNext = affectionLvValList[affectionDetailLv] - affectionNum
-        affectionDetailStr = "Lv : " + affectionDetailLv + ", Next : " + affectionDetailNext
+    if (affectionNum >= 100) {
+        affectionDetailStr = "Lv : Max"
     }
     else {
-        affectionDetailStr = "Lv : Max"
+        for (var i = affectionLvValList.length - 1 ; i >= 0; i--) {
+            if (affectionNum < affectionLvValList[i]) {
+                affectionDetailLv = i
+                affectionDetailNext = affectionLvValList[affectionDetailLv] - affectionNum
+                affectionDetailStr = "Lv : " + affectionDetailLv + ", Next : " + affectionDetailNext
+            }
+        }
     }
 
     document.getElementById("affectionHead").innerText = "(" + affectionDetailStr + ")"
