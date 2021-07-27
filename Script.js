@@ -2,36 +2,92 @@ var nowSpNum;
 var winSel;
 var affectionNum;
 var fanNum;
+const addFansChkBoxList = [];
+
+class AddFans {
+  constructor(id, value, description) {
+    this.id = id;
+    this.value = value;
+    this.description = description;
+  }
+}
+
+function setAddFansChkBoxList() {
+  addFansChkBoxList.push(new AddFans(1, 10000, "W.I.N.G. 우승 (+10,000)"));
+  addFansChkBoxList.push(new AddFans(2, 100000, "감사제 MVP (+100,000)"));
+  addFansChkBoxList.push(new AddFans(3, 20000, "감사제 베스트 보컬 (+20,000)"));
+  addFansChkBoxList.push(new AddFans(4, 20000, "감사제 베스트 댄서 (+20,000)"));
+  addFansChkBoxList.push(new AddFans(5, 20000, "감사제 베스트 모델 (+20,000)"));
+  addFansChkBoxList.push(new AddFans(6, 20000, "감사제 베스트 MC (+20,000)"));
+  addFansChkBoxList.push(new AddFans(7, 20000, "감사제 베스트 테크닉 (+20,000)"));
+  addFansChkBoxList.push(
+    new AddFans(8, 10000, "감사제 열심히 잘한 상 (がんばったで賞) (+10,000)")
+  );
+  addFansChkBoxList.push(new AddFans(9, 10000, "G.R.A.D. 우승 (+10,000)"));
+  addFansChkBoxList.push(new AddFans(10, 10000, "Landing Point 라이브 대성공 (+10,000)"));
+}
 
 init();
 
 function init() {
   mainInputUpdate();
+  setAddFansChkBoxList();
+  generateAdditionalFansCheckbox();
+}
+
+function generateAdditionalFansCheckbox() {
+  addFansChkBoxList.forEach((addFansChk) => {
+    $("#additionalFans")
+      .append(
+        $("<input>", {
+          type: "checkbox",
+          id: `bonus${addFansChk.id}`,
+          name: "bonusFanNum",
+          value: addFansChk.value,
+          onchange: "mainInputUpdate()",
+        })
+      )
+      .append(
+        $("<label>", {
+          for: `bonus${addFansChk.id}`,
+          text: ` ${addFansChk.description}`,
+        }).append("<br />")
+      );
+  });
 }
 
 function mainInputUpdate() {
   initNumVal();
-  winSel = document.getElementById("winSel").value;
+  winSel = $("#winSel").val();
 
   applyChangeSP();
 }
 
 function initNumVal() {
-  nowSpNum = chkNumRange("nowSpNum");
-  document.getElementById("nowSpNum").value = nowSpNum;
+  nowSpNum = chkNumRange("#nowSpNum");
+  $("#nowSpNum").val(nowSpNum);
 
-  affectionNum = chkNumRange("affectionNum");
-  document.getElementById("affectionNum").value = affectionNum;
+  affectionNum = chkNumRange("#affectionNum");
+  $("#affectionNum").val(affectionNum);
 
-  fanNum = chkNumRange("fanNum");
-  document.getElementById("fanNum").value = fanNum;
+  fanNum = chkNumRange("#fanNum");
+  $("#fanNum").val(fanNum);
 }
 
 function chkNumRange(targetId) {
-  var target = Number(document.getElementById(targetId).value);
-  var num = Number(document.getElementById(targetId).value);
-  var min = Number(document.getElementById(targetId).min);
-  var max = Number(document.getElementById(targetId).max);
+  var min = Number($(targetId).attr("min"));
+  var max = Number($(targetId).attr("max"));
+
+  var num;
+  var target;
+  // 입력 데이터가 숫자가 아닐시 최소값으로 변경
+  if (isNaN($(targetId).val())) {
+    num = min;
+    target = min;
+  } else {
+    num = Number($(targetId).val());
+    target = Number($(targetId).val());
+  }
 
   if (target < min) {
     num = min;
@@ -41,7 +97,7 @@ function chkNumRange(targetId) {
     num = max;
   }
 
-  return Number(num);
+  return num;
 }
 
 function applyChangeSP() {
@@ -53,12 +109,12 @@ function applyChangeSP() {
 
   var totalSp = calSp(nowSp, winSp, affectionSp, fanSp);
 
-  changeNowSP(nowSp);
-  changeWinSP(winSp);
+  $("#calNowSp").text(nowSp);
+  $("#calWinSp").text(winSp);
   changeaffectionSP(affectionSp, affectionNum);
   changeFanSP(fanSp, totalFanNum);
 
-  document.getElementById("resultSP").innerText = totalSp;
+  $("#resultSP").text(totalSp);
 }
 
 function calSp(nowSp, winSp, affectionSp, fanSp) {
@@ -67,8 +123,7 @@ function calSp(nowSp, winSp, affectionSp, fanSp) {
 }
 
 function winSpCal(result) {
-  if (result == "win") return 60;
-  else return 0;
+  return result == "win" ? 60 : 0;
 }
 
 function fanSpCal(totalFanNum) {
@@ -79,23 +134,15 @@ function fanSpCal(totalFanNum) {
 
 function totalFanNumCal(fanNum) {
   var totalFanNum = fanNum;
-  var bonus_length = document.getElementsByName("bonusFanNum").length;
+  var addFansBonus = $(`input[name="bonusFanNum"]`);
 
-  for (var i = 0; i < bonus_length; i++) {
-    if (document.getElementsByName("bonusFanNum")[i].checked == true) {
-      totalFanNum += Number(document.getElementsByName("bonusFanNum")[i].value);
+  for (var i = 0; i < addFansBonus.length; i++) {
+    if (addFansBonus.eq(i).is(":checked") == true) {
+      totalFanNum += Number(addFansBonus.eq(i).val());
     }
   }
 
   return totalFanNum;
-}
-
-function changeNowSP(nowSp) {
-  document.getElementById("calNowSp").innerText = nowSp;
-}
-
-function changeWinSP(winSp) {
-  document.getElementById("calWinSp").innerText = winSp;
 }
 
 function changeaffectionSP(affectionSp, affectionNum) {
@@ -116,13 +163,13 @@ function changeaffectionSP(affectionSp, affectionNum) {
     }
   }
 
-  document.getElementById("affectionHead").innerText = "(" + affectionDetailStr + ")";
-  document.getElementById("calaffectionSp").innerText = affectionSp;
+  $("#affectionHead").text(`(${affectionDetailStr})`);
+  $("#calaffectionSp").text(affectionSp);
 }
 
 function changeFanSP(fanSp, totalFanNum) {
-  document.getElementById("fanNumHead").innerText = "(총 " + numberWithCommas(totalFanNum) + "명)";
-  document.getElementById("calFanSp").innerText = fanSp;
+  $("#fanNumHead").text(`(총 ${numberWithCommas(totalFanNum)}명)`);
+  $("#calFanSp").text(fanSp);
 }
 
 // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
