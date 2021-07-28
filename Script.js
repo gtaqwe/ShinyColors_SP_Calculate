@@ -2,6 +2,7 @@ var nowSpNum;
 var winSel;
 var affectionNum;
 var fanNum;
+var extraSpNum;
 const addFansChkBoxList = [];
 
 class AddFans {
@@ -72,6 +73,9 @@ function initNumVal() {
 
   fanNum = chkNumRange("#fanNum");
   $("#fanNum").val(fanNum);
+
+  extraSpNum = chkNumRange("#extraSpNum");
+  $("#extraSpNum").val(extraSpNum);
 }
 
 function chkNumRange(targetId) {
@@ -105,20 +109,22 @@ function applyChangeSP() {
   var winSp = winSpCal(winSel);
   var affectionSp = affectionNum;
   var totalFanNum = totalFanNumCal(fanNum);
+  var extraSp = extraSpNum;
   var fanSp = fanSpCal(totalFanNum);
 
-  var totalSp = calSp(nowSp, winSp, affectionSp, fanSp);
+  var totalSp = calSp(nowSp, winSp, affectionSp, fanSp, extraSp);
 
   $("#calNowSp").text(nowSp);
   $("#calWinSp").text(winSp);
   changeaffectionSP(affectionSp, affectionNum);
   changeFanSP(fanSp, totalFanNum);
+  $("#calExtraSp").text(extraSp);
 
   $("#resultSP").text(totalSp);
 }
 
-function calSp(nowSp, winSp, affectionSp, fanSp) {
-  var totalSp = nowSp + winSp + affectionSp + fanSp;
+function calSp(nowSp, winSp, affectionSp, fanSp, extraSp) {
+  var totalSp = nowSp + winSp + affectionSp + fanSp + extraSp;
   return totalSp;
 }
 
