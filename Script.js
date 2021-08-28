@@ -3,29 +3,48 @@ var winSel;
 var affectionNum;
 var fanNum;
 var extraSpNum;
-const addFansChkBoxList = [];
+let totalAddFansChkBoxList = [];
+
+const wingFansChkBoxList = [];
+const fanFestivalFansChkBoxList = [];
+const gradFansChkBoxList = [];
+const lpFansChkBoxList = [];
 
 class AddFans {
-  constructor(id, value, description) {
-    this.id = id;
+  constructor(value, description) {
     this.value = value;
     this.description = description;
   }
 }
 
 function setAddFansChkBoxList() {
-  addFansChkBoxList.push(new AddFans(1, 10000, "W.I.N.G. 우승 (+10,000)"));
-  addFansChkBoxList.push(new AddFans(2, 100000, "감사제 MVP (+100,000)"));
-  addFansChkBoxList.push(new AddFans(3, 20000, "감사제 베스트 보컬 (+20,000)"));
-  addFansChkBoxList.push(new AddFans(4, 20000, "감사제 베스트 댄서 (+20,000)"));
-  addFansChkBoxList.push(new AddFans(5, 20000, "감사제 베스트 모델 (+20,000)"));
-  addFansChkBoxList.push(new AddFans(6, 20000, "감사제 베스트 MC (+20,000)"));
-  addFansChkBoxList.push(new AddFans(7, 20000, "감사제 베스트 테크닉 (+20,000)"));
-  addFansChkBoxList.push(
-    new AddFans(8, 10000, "감사제 열심히 잘한 상 (がんばったで賞) (+10,000)")
+  // WING
+  wingFansChkBoxList.push(new AddFans(10000, "W.I.N.G. 우승 (+10,000)"));
+
+  // 감사제
+  fanFestivalFansChkBoxList.push(new AddFans(100000, "감사제 MVP (+100,000)"));
+  fanFestivalFansChkBoxList.push(new AddFans(20000, "감사제 베스트 보컬 (+20,000)"));
+  fanFestivalFansChkBoxList.push(new AddFans(20000, "감사제 베스트 댄서 (+20,000)"));
+  fanFestivalFansChkBoxList.push(new AddFans(20000, "감사제 베스트 모델 (+20,000)"));
+  fanFestivalFansChkBoxList.push(new AddFans(20000, "감사제 베스트 MC (+20,000)"));
+  fanFestivalFansChkBoxList.push(new AddFans(20000, "감사제 베스트 테크닉 (+20,000)"));
+  fanFestivalFansChkBoxList.push(
+    new AddFans(10000, "감사제 열심히 잘한 상 (がんばったで賞) (+10,000)")
   );
-  addFansChkBoxList.push(new AddFans(9, 10000, "G.R.A.D. 우승 (+10,000)"));
-  addFansChkBoxList.push(new AddFans(10, 10000, "Landing Point 라이브 대성공 (+10,000)"));
+
+  // GRAD
+  gradFansChkBoxList.push(new AddFans(10000, "G.R.A.D. 우승 (+10,000)"));
+
+  // Landing Point
+  lpFansChkBoxList.push(new AddFans(10000, "Landing Point 라이브 대성공 (+10,000)"));
+
+  // 종합
+  totalAddFansChkBoxList.push(wingFansChkBoxList);
+  totalAddFansChkBoxList.push(fanFestivalFansChkBoxList);
+  totalAddFansChkBoxList.push(gradFansChkBoxList);
+  totalAddFansChkBoxList.push(lpFansChkBoxList);
+
+  totalAddFansChkBoxList = totalAddFansChkBoxList.flat();
 }
 
 init();
@@ -36,13 +55,67 @@ function init() {
   generateAdditionalFansCheckbox();
 }
 
+function changeProduceMode() {
+  generateAdditionalFansCheckbox();
+  finalTitleChange();
+  mainInputUpdate();
+}
+
+function changeFinalWin() {
+  finalTitleChange();
+  mainInputUpdate();
+}
+
+function finalTitleChange() {
+  var produceMode = $("#produceSel").val();
+  var addedText = "";
+  if (produceMode == 0) {
+    $("#finalTitle").text("결승 / 본방 / 본선");
+  } else if (produceMode == 1) {
+    if ($("#winSel").val() == "win") addedText = "우승";
+    else addedText = "패배";
+    $("#finalTitle").text("결승").append(`<br /> (${addedText})`);
+  } else if (produceMode == 2) {
+    if ($("#winSel").val() == "win") addedText = "베스트 테크닉";
+    else addedText = "미취득";
+    $("#finalTitle").text("본방").append(`<br /> (${addedText})`);
+  } else if (produceMode == 3) {
+    if ($("#winSel").val() == "win") addedText = "우승";
+    else addedText = "패배";
+    $("#finalTitle").text("본선").append(`<br /> (${addedText})`);
+  } else if (produceMode == 4) {
+    if ($("#winSel").val() == "win") addedText = "대성공";
+    else addedText = "성공";
+    $("#finalTitle").text("본방").append(`<br /> (${addedText})`);
+  }
+}
+
+function getAddFansChkBox() {
+  var produceMode = $("#produceSel").val();
+  if (produceMode == 0) {
+    return totalAddFansChkBoxList;
+  } else if (produceMode == 1) {
+    return wingFansChkBoxList;
+  } else if (produceMode == 2) {
+    return fanFestivalFansChkBoxList;
+  } else if (produceMode == 3) {
+    return gradFansChkBoxList;
+  } else if (produceMode == 4) {
+    return lpFansChkBoxList;
+  }
+}
+
 function generateAdditionalFansCheckbox() {
-  addFansChkBoxList.forEach((addFansChk) => {
+  chkBoxList = getAddFansChkBox();
+
+  $("#additionalFans").empty();
+
+  chkBoxList.forEach((addFansChk, id) => {
     $("#additionalFans")
       .append(
         $("<input>", {
           type: "checkbox",
-          id: `bonus${addFansChk.id}`,
+          id: `bonus${id}`,
           name: "bonusFanNum",
           value: addFansChk.value,
           onchange: "mainInputUpdate()",
@@ -50,7 +123,7 @@ function generateAdditionalFansCheckbox() {
       )
       .append(
         $("<label>", {
-          for: `bonus${addFansChk.id}`,
+          for: `bonus${id}`,
           text: ` ${addFansChk.description}`,
         }).append("<br />")
       );

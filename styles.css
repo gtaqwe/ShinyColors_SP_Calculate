@@ -3,18 +3,17 @@ div {
 }
 
 h3 {
-  margin: 5px 20px;
+  margin: 5px 0px;
 }
 
 input[type="number"] {
-  -webkit-appearance: textfield;
-  -moz-appearance: textfield;
-  appearance: textfield;
+  width: 100px;
+  font-size: large;
 }
 
 .inputItems {
   text-align: center;
-  min-width: 200px;
+  min-width: 155px;
   margin: 0px 10px;
   display: inline-block;
 }
