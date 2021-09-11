@@ -1,5 +1,5 @@
 div {
-  margin: 10px;
+  margin: 5px;
 }
 
 h3 {
@@ -13,8 +13,7 @@ input[type="number"] {
 
 .inputItems {
   text-align: center;
-  min-width: 155px;
-  margin: 0px 10px;
+  min-width: 160px;
   display: inline-block;
 }
 
