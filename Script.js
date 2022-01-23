@@ -4,6 +4,7 @@ var affectionNum;
 var fanNum;
 var extraSpNum;
 var subSpNum;
+var skillSpNum;
 let totalAddFansChkBoxList = [];
 
 const wingFansChkBoxList = [];
@@ -48,12 +49,22 @@ function setAddFansChkBoxList() {
   totalAddFansChkBoxList = totalAddFansChkBoxList.flat();
 }
 
-init();
+$().ready(function () {
+  init();
+});
 
 function init() {
+  nowSpNum = 0;
+  affectionNum = 0;
+  fanNum = 0;
+  extraSpNum = 0;
+  subSpNum = 0;
+  skillSpNum = 0;
+
   mainInputUpdate();
   setAddFansChkBoxList();
   generateAdditionalFansCheckbox();
+  createPanel();
 }
 
 function changeProduceMode() {
@@ -186,32 +197,31 @@ function applyChangeSP() {
   var winSp = winSpCal(winSel);
   var affectionSp = affectionNum;
   var totalFanNum = totalFanNumCal(fanNum);
-  var extraSp = extraSpNum;
-  var subSp = subSpNum;
   var fanSp = fanSpCal(totalFanNum);
+  var extraSp = extraSpNum;
 
-  var totalSp = calAddSp(nowSp, winSp, affectionSp, fanSp, extraSp);
-  totalSp = calSubSp(totalSp, subSp);
+  var subSp = subSpNum;
+  var skillSp = skillSpNum;
 
+  // 추가 SP
   $("#calNowSp").text(nowSp);
   $("#calWinSp").text(winSp);
   changeaffectionSP(affectionSp, affectionNum);
   changeFanSP(fanSp, totalFanNum);
   $("#calExtraSp").text(extraSp);
 
+  var addSp = nowSp + winSp + affectionSp + fanSp + extraSp;
+  $("#addSP").text(addSp);
+
+  // 삭감 SP
   $("#calSubSp").text(subSp);
 
+  var subtractSp = subSp + skillSp;
+  $("#subtractSP").text(subtractSp);
+
+  // 계산 결과 SP
+  var totalSp = addSp - subtractSp;
   $("#resultSP").text(totalSp);
-}
-
-function calAddSp(nowSp, winSp, affectionSp, fanSp, extraSp) {
-  var calSp = nowSp + winSp + affectionSp + fanSp + extraSp;
-  return calSp;
-}
-
-function calSubSp(totalSp, subSpNum) {
-  var calSp = totalSp - subSpNum;
-  return calSp;
 }
 
 function winSpCal(result) {
@@ -237,6 +247,9 @@ function totalFanNumCal(fanNum) {
   return totalFanNum;
 }
 
+/**
+ * 친애도 SP 계산
+ */
 function changeaffectionSP(affectionSp, affectionNum) {
   var affectionLvValList = [1, 25, 50, 75, 100];
   var affectionDetailLv;
@@ -267,4 +280,61 @@ function changeFanSP(fanSp, totalFanNum) {
 // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/**
+ * 스킬 패널 생성
+ */
+function createPanel() {
+  $(".panel").append(`<ul>`);
+  $(".panel ul").addClass(`container`);
+
+  for (let root = 0; root < 6; root++) {
+    for (let i = 2; i <= 5; i++) {
+      for (let j = 1; j < i; j++) {
+        $(`.panel .container`).append(
+          `<li class="item sp${i * 10} hexNoSel" sel="noSel"><span class="inner noselect">${
+            i * 10
+          }</span></li>`
+        );
+      }
+    }
+  }
+
+  // SP20 ~ SP50까지 패널 처리
+  for (let i = 2; i <= 5; i++) {
+    $(`.sp${i * 10}`).click(function () {
+      // 선택->계산 제외
+      if ($(this).attr("sel") == "sel") {
+        $(this).attr("sel", "noCal");
+        $(this).removeClass("hexSel");
+        $(this).addClass("hexNoCal");
+
+        // 패널 텍스트 변경
+        $(this).children("span").text(0);
+
+        skillSpNum -= i * 10;
+      }
+      // 계산 제외->미선택
+      else if ($(this).attr("sel") == "noCal") {
+        $(this).attr("sel", "noSel");
+        $(this).removeClass("hexNoCal");
+        $(this).addClass("hexNoSel");
+
+        // 패널 텍스트 변경
+        $(this)
+          .children("span")
+          .text(i * 10);
+      }
+      // 미선택->선택
+      else {
+        $(this).attr("sel", "sel");
+        $(this).removeClass("hexNoSel");
+        $(this).addClass("hexSel");
+        skillSpNum += i * 10;
+      }
+
+      applyChangeSP();
+    });
+  }
 }

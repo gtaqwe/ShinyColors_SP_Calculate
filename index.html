@@ -5,6 +5,7 @@
     <title>SP Calculate</title>
 
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="SkillPanel.css" />
   </head>
 
   <body>
@@ -90,9 +91,7 @@
               <h3 id="calExtraSp"></h3>
             </div>
           </fieldset>
-        </div>
 
-        <div>
           <fieldset style="display: flex">
             <div class="inputItems">
               <h3>프로듀스 모드</h3>
@@ -112,6 +111,21 @@
               <div id="additionalFans" style="text-align: left"></div>
             </div>
           </fieldset>
+          <fieldset>
+            <div style="text-align: center">
+              <h2>추가 SP</h2>
+              <h2><div id="addSP"></div></h2>
+            </div>
+          </fieldset>
+        </div>
+
+        <hr />
+        <div>
+          ※ 각 수치의 범위<br />
+          - 현재 SP : 0 ~ 10,000<br />
+          - 친애도 : 0 ~ 100<br />
+          - 팬 수 : 0 ~ 10,000,000<br />
+          - 그 외 추가 SP : 0 ~ 10,000
         </div>
       </fieldset>
     </div>
@@ -119,39 +133,76 @@
     <div>
       <fieldset>
         <legend><h3>SP 삭감</h3></legend>
-        <fieldset>
-          <div class="inputItems">
-            <h3>삭감 SP</h3>
-            <div style="display: inline-flex">
-              <input
-                type="number"
-                id="subSpNum"
-                min="0"
-                max="10000"
-                value="0"
-                step="1"
-                onchange="mainInputUpdate()"
-              />
+        <div>
+          <fieldset>
+            <details>
+              <summary style="cursor: pointer">스킬 패널</summary>
+              <div>
+                <fieldset style="text-align: center">
+                  <div class="panel"></div>
+                </fieldset>
+              </div>
+              <div>
+                ※ 패널 설명
+                <div style="margin: 0px">
+                  <ul class="helpContainer">
+                    <li class="helpItem hexNoSel"><span class="inner noselect">N</span></li>
+                  </ul>
+                  <span>미선택, 계산 제외</span>
+                </div>
+                <div style="margin: 0px">
+                  <ul class="helpContainer">
+                    <li class="helpItem hexSel"><span class="inner noselect">N</span></li>
+                  </ul>
+                  <span>선택, 계산 포함</span>
+                </div>
+                <div style="margin: 0px">
+                  <ul class="helpContainer">
+                    <li class="helpItem hexNoCal"><span class="inner noselect">0</span></li>
+                  </ul>
+                  <span>선택, 계산 제외</span>
+                </div>
+              </div>
+            </details>
+          </fieldset>
+
+          <fieldset>
+            <div class="inputItems">
+              <h3>그 외 삭감 SP</h3>
+              <div style="display: inline-flex">
+                <input
+                  type="number"
+                  id="subSpNum"
+                  min="0"
+                  max="10000"
+                  value="0"
+                  step="1"
+                  onchange="mainInputUpdate()"
+                />
+              </div>
+              <h3 id="calSubSp"></h3>
             </div>
-            <h3 id="calSubSp"></h3>
-          </div>
-        </fieldset>
+          </fieldset>
+          <fieldset>
+            <div style="text-align: center">
+              <h2>삭감 SP</h2>
+              <h2><div id="subtractSP"></div></h2>
+            </div>
+          </fieldset>
+        </div>
+        <hr />
+        <div>
+          ※ 각 수치의 범위<br />
+          - 그 외 삭감 SP : 0 ~ 10,000
+        </div>
       </fieldset>
     </div>
 
     <div style="text-align: center">
       <fieldset>
-        <h2>최종예상 SP</h2>
+        <h2>최종 SP</h2>
         <h2><div id="resultSP"></div></h2>
       </fieldset>
-    </div>
-
-    <div>
-      ※ 각 수치의 범위<br />
-      - 현재 SP : 0 ~ 10,000<br />
-      - 친애도 : 0 ~ 100<br />
-      - 팬 수 : 0 ~ 10,000,000<br />
-      - 그 외 추가 SP : 0 ~ 10,000
     </div>
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>

@@ -21,3 +21,69 @@ footer {
   text-align: center;
   font-size: 10px;
 }
+
+.panel {
+  margin: 10px 0px;
+}
+
+.inner,
+.item,
+.helpItem {
+  width: 60px;
+  height: 60px;
+}
+
+.inner,
+.helpItem {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.item,
+.helpItem {
+  position: relative;
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+
+  display: inline-block;
+  cursor: pointer;
+}
+
+.hexNoSel {
+  background-color: rgba(200, 200, 200, 1);
+}
+.hexNoSel:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.hexSel {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+.hexSel:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hexNoCal {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+.hexNoCal:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.helpContainer {
+  padding: 0px;
+  margin: 5px;
+  display: inline-block;
+}
