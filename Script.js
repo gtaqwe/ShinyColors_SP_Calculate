@@ -49,6 +49,14 @@ function setAddFansChkBoxList() {
   totalAddFansChkBoxList = totalAddFansChkBoxList.flat();
 }
 
+$("#skill_panel_details").bind("click", function () {
+  if (skill_panel_details.open) {
+    $("#skill_panel_summary").text("스킬 패널 펼치기");
+  } else {
+    $("#skill_panel_summary").text("스킬 패널 접기");
+  }
+});
+
 $().ready(function () {
   init();
 });
@@ -60,6 +68,12 @@ function init() {
   extraSpNum = 0;
   subSpNum = 0;
   skillSpNum = 0;
+
+  if (skill_panel_details.open) {
+    $("#skill_panel_summary").text("스킬 패널 접기");
+  } else {
+    $("#skill_panel_summary").text("스킬 패널 펼치기");
+  }
 
   mainInputUpdate();
   setAddFansChkBoxList();
