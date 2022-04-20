@@ -302,10 +302,11 @@ function numberWithCommas(x) {
 function createPanel() {
   $(".panel").append(`<ul>`);
   $(".panel ul").addClass(`container`);
+  pannel_num = [1, 2, 3, 4, 3];
 
-  for (let root = 0; root < 6; root++) {
-    for (let i = 2; i <= 5; i++) {
-      for (let j = 1; j < i; j++) {
+  for (let rootIdx = 0; rootIdx < 6; rootIdx++) {
+    for (let i = 2; i <= 6; i++) {
+      for (let j = 1; j <= pannel_num[i - 2]; j++) {
         $(`.panel .container`).append(
           `<li class="item sp${i * 10} hexNoSel" sel="noSel"><span class="inner noselect">${
             i * 10
@@ -315,8 +316,8 @@ function createPanel() {
     }
   }
 
-  // SP20 ~ SP50까지 패널 처리
-  for (let i = 2; i <= 5; i++) {
+  // SP20 ~ SP60까지 패널 처리
+  for (let i = 2; i <= 6; i++) {
     $(`.sp${i * 10}`).click(function () {
       // 선택->계산 제외
       if ($(this).attr("sel") == "sel") {
