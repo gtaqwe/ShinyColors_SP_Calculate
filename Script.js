@@ -49,7 +49,7 @@ function setAddFansChkBoxList() {
   totalAddFansChkBoxList = totalAddFansChkBoxList.flat();
 }
 
-$("#skill_panel_details").bind("click", function () {
+$("#skill_panel_summary").bind("click", function () {
   if (skill_panel_details.open) {
     $("#skill_panel_summary").text("스킬 패널 펼치기");
   } else {
